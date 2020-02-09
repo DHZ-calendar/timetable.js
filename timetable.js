@@ -106,6 +106,13 @@ class Timetable {
             block.setStateNormal();
         }
     }
+    deleteAllBlocks(){
+        for (let bId of Object.keys(this.blocks)) {
+            let block = this.blocks[bId];
+            block.delete();
+        }
+        this.blocks = {};
+    }
     addEvent(event, blockId, clickFn) {
         let block = this.blocks[blockId];
 
