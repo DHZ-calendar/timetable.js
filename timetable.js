@@ -150,30 +150,24 @@ class Block {
     }
     setStateAvailable() {
         let blockHtml = this._getBlockHtmlElement();
-        if (blockHtml.attr("data-event") == undefined) {
-            blockHtml.show();
-            this._adjustColsWeight(true);
-            blockHtml.addClass('cal-block-available');
-            blockHtml.removeClass('cal-block-denied');
-        }
+        blockHtml.show();
+        this._adjustColsWeight(true);
+        blockHtml.addClass('cal-block-available');
+        blockHtml.removeClass('cal-block-denied');
     }
     setStateDenied() {
         let blockHtml = this._getBlockHtmlElement();
-        if (blockHtml.attr("data-event") == undefined) {
-            blockHtml.show();
-            this._adjustColsWeight();
-            blockHtml.addClass('cal-block-denied');
-            blockHtml.removeClass('cal-block-available');
-        }
+        blockHtml.show();
+        this._adjustColsWeight();
+        blockHtml.addClass('cal-block-denied');
+        blockHtml.removeClass('cal-block-available');
     }
     setStateNormal() {
         let blockHtml = this._getBlockHtmlElement();
-        if (blockHtml.attr("data-event") == undefined) { //TODO: change
-            this._adjustColsWeight();
-            blockHtml.removeClass('cal-block-denied');
-            blockHtml.removeClass('cal-block-available');
-            blockHtml.unbind("click");
-        }
+        this._adjustColsWeight();
+        blockHtml.removeClass('cal-block-denied');
+        blockHtml.removeClass('cal-block-available');
+        blockHtml.unbind("click");
     }
     addEvent(event, clickFn) {
         event.attachToBlock(this);
