@@ -19,23 +19,32 @@ class Timetable {
         this.blocks = {};
         this.events = [];
 
+        this.lang = navigator.language || navigator.userLanguage;
+
         this.init(cal);
     }
 
-    _DAYS = ['LUN', 'MAR', 'MER', 'GIO', 'VEN', 'SAB', 'DOM']
+    _DAYS = { 
+        it: ['LUN', 'MAR', 'MER', 'GIO', 'VEN', 'SAB', 'DOM'],
+        en: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+    }
 
     init() {
         this.calendar.addClass('cal-tbody');
 
+        let days = this._DAYS.en;
+        if(this.lang in Object.keys(this._DAYS))
+            days = this._DAYS[this.lang];
+
         this.calendar.append(`        
             <tr>
                 <td class="col-time">&nbsp;</td>
-                <td class="col-day cal-heading">${this._DAYS[0]}</td>
-                <td class="col-day cal-heading">${this._DAYS[1]}</td>
-                <td class="col-day cal-heading">${this._DAYS[2]}</td>
-                <td class="col-day cal-heading">${this._DAYS[3]}</td>
-                <td class="col-day cal-heading">${this._DAYS[4]}</td>
-                <td class="col-day cal-heading">${this._DAYS[5]}</td>
+                <td class="col-day cal-heading">${days[0]}</td>
+                <td class="col-day cal-heading">${days[1]}</td>
+                <td class="col-day cal-heading">${days[2]}</td>
+                <td class="col-day cal-heading">${days[3]}</td>
+                <td class="col-day cal-heading">${days[4]}</td>
+                <td class="col-day cal-heading">${days[5]}</td>
             </tr>`);
 
         for (let ora = this.minHour; ora <= this.maxHour; ora++) {
