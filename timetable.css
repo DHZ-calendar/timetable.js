@@ -1,0 +1,84 @@
+.cal-cell {
+    min-height: 5px;
+    height: 5px;
+    border-left: 1px solid #c2c2c2;
+    border-right: 1px solid #c2c2c2;
+    text-align: center;
+    padding: 0px;
+}
+
+.cal-time {
+    max-height: 70px;
+    height: 70px;
+    border: 1px solid black;
+}
+
+.cal-row-top {
+    border-top: 1px solid #c2c2c2;
+}
+
+.cal-tbody {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.cal-heading {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.cal-block {
+    background-color: #e6e6e6;
+    border-radius: 8px;
+    border: 1px solid gray;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 100%;
+    max-height: 100%;
+}
+
+.cal-block-available {
+    background-color: lightgreen;
+    cursor: pointer;
+}
+
+.cal-block-denied {
+    background-color: lightsalmon;
+}
+
+.cal-block-cells {
+    height: 50%;
+    overflow: hidden;
+}
+
+.cal-event-cells {
+    height: 33%;
+    overflow: hidden;
+}
+
+.cal-event {
+    background-color: lightseagreen;
+}
+
+.col-day {
+    max-width: 15.2777777778%;
+    /*min-width: 15.2777777778%;*/
+    width: 15.2777777778%;
+    /*calc((100% - (100% / 12)) / 6);*/
+}
+
+.col-time {
+    max-width: 5%;
+    width: 5%;
+}
+
+.cal-cell .row {
+    margin: 0px;
+}
+
+.cal-btn-del {
+    top: 0px;
+    right: 2px;
+    position: absolute;
+    cursor: pointer;
+}
