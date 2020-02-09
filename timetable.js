@@ -114,12 +114,13 @@ class Timetable {
 }
 
 class Block {
-    constructor(id, text, day, startTime, endTime) {
+    constructor(id, text, day, startTime, endTime, deletable=false) {
         this.id = id;
         this.text = text;
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.deletable = deletable;
 
         this.events = [];
 
@@ -127,13 +128,27 @@ class Block {
     }
 
     getHTML() {
-        return `
+        let deleteBtn = '';
+        if(this.deletable)
+            deleteBtn = '<span class="cal-btn-del">x</span>';
+
+        let el = $(`
             <div class="row">
                 <div class="col-12 cal-block">
-                <div class="cal-block-cells">${this.text}</div>
-                <div class="cal-block-cells">${formatHours(this.startTime.hours, this.startTime.min)} - ${formatHours(this.endTime.hours, this.endTime.min)}</div>
+                    <div class="cal-block-cells">${this.text}</div>
+                    <div class="cal-block-cells">${formatHours(this.startTime.hours, this.startTime.min)} - ${formatHours(this.endTime.hours, this.endTime.min)}</div>
+                
+                    ${deleteBtn}
                 </div>
-            </div>`;
+            </div>`);
+
+        if(this.deletable){
+            el.find('.cal-btn-del').click((e) => {
+                this.delete();
+            });
+        }
+
+        return el;
     }
     setOnClick(onClick) {
         let blockHtml = this._getBlockHtmlElement();
@@ -168,6 +183,20 @@ class Block {
         blockHtml.removeClass('cal-block-denied');
         blockHtml.removeClass('cal-block-available');
         blockHtml.unbind("click");
+    }
+    delete(){
+        let tableCell = this.htmlElement.parent();
+        let rowspan = tableCell.attr("rowspan");
+        let day = tableCell.attr("data-day");
+
+        let nextRow = tableCell.parent().next();
+        for(let i = 0; i < rowspan; i++){
+            nextRow.find(`td[data-day=${day}]`).show();
+            nextRow = nextRow.next();
+        }
+
+        tableCell.removeAttr("rowspan");
+        this.htmlElement.remove();
     }
     addEvent(event, clickFn) {
         event.attachToBlock(this);
