@@ -113,6 +113,12 @@ class Timetable {
         }
         this.blocks = {};
     }
+    deleteAllEvents(){
+        for (let bId of Object.keys(this.blocks)) {
+            let block = this.blocks[bId];
+            block.deleteAllEvents();
+        }
+    }
     addEvent(event, blockId, clickFn) {
         let block = this.blocks[blockId];
 
@@ -236,6 +242,11 @@ class Block {
 
         //fix the col-* bootstrap class
         this._adjustColsWeight();
+    }
+    deleteAllEvents() {
+        for(let event of this.events){
+            this.deleteEvent(event);
+        }
     }
     _adjustColsWeight(countNewBlock = false) {
         let numChildren = this.events.length;
