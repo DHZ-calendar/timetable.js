@@ -140,10 +140,12 @@ class Timetable {
         let days = this.getDaysTranslated();
         let frm = (x) => ("0" + x).slice(-2);
 
+        let date = new Date(startDate);
+
         for(let i = 1; i < headers.length; i++){
-            let dateStr = frm(startDate.getDate()) + "/" + frm(startDate.getMonth() + 1);
+            let dateStr = frm(date.getDate()) + "/" + frm(date.getMonth() + 1);
             $(headers[i]).text(days[i-1] + " " + dateStr);
-            startDate = new Date(startDate.setDate(startDate.getDate() + 1));            
+            date = new Date(date.setDate(date.getDate() + 1));            
         }
     }
 }
