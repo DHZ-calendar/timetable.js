@@ -37,6 +37,10 @@
     max-height: 100%;
 }
 
+.cal-locked-day{
+    background-color: burlywood;
+}
+
 .cal-block-available {
     background-color: lightgreen;
     cursor: pointer;
@@ -49,6 +53,15 @@
 .cal-block-cells {
     height: 50%;
     overflow: hidden;
+    position: relative;
+}
+
+.cal-block-text{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0px;
 }
 
 .cal-event-cells {

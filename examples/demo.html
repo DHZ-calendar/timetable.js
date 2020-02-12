@@ -53,6 +53,8 @@
 
         block = new Block(5, "Sixth lecture", 1, { hours: 13, min: 10 }, { hours: 14, min: 0 }, true);
         timetable.addBlock(block, clickFn);
+
+        timetable.lockDay(3, "Easter");
       });    
 
       function btnClick(){

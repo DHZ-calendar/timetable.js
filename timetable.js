@@ -18,6 +18,7 @@ class Timetable {
 
         this.blocks = {};
         this.events = [];
+        this.lockedDays = [];
 
         this.lang = navigator.language || navigator.userLanguage;
 
@@ -124,6 +125,11 @@ class Timetable {
 
         block.addEvent(event, clickFn);
     }
+    lockDay(dayOfWeek, text){
+        let blockLocked = new Block("Lock" + dayOfWeek, text, dayOfWeek, { hours: this.minHour, min: 0 }, { hours: this.maxHour + 1, min: 0 });
+        blockLocked.locked = true;
+        this.addBlock(blockLocked);
+    }
 }
 
 class Block {
@@ -134,6 +140,7 @@ class Block {
         this.startTime = startTime;
         this.endTime = endTime;
         this.deletable = deletable;
+        this.locked = false;
 
         this.events = [];
 
@@ -145,12 +152,21 @@ class Block {
         if(this.deletable)
             deleteBtn = '<span class="cal-btn-del">x</span>';
 
+        let hoursText = '';
+        let blockClass = '';
+        if(!this.locked)
+            hoursText = `<div class="cal-block-cells">${formatHours(this.startTime.hours, this.startTime.min)} - ${formatHours(this.endTime.hours, this.endTime.min)}</div>`;
+        else
+            blockClass = 'cal-locked-day';
+
         let el = $(`
             <div class="row">
-                <div class="col-12 cal-block">
-                    <div class="cal-block-cells">${this.text}</div>
-                    <div class="cal-block-cells">${formatHours(this.startTime.hours, this.startTime.min)} - ${formatHours(this.endTime.hours, this.endTime.min)}</div>
-                
+                <div class="col-12 cal-block ${blockClass}">
+                    <div class="cal-block-cells">
+                        <p class="cal-block-text">${this.text}</p>
+                    </div>
+                    ${hoursText}
+
                     ${deleteBtn}
                 </div>
             </div>`);
@@ -177,6 +193,9 @@ class Block {
         return this.htmlElement.children().last();
     }
     setStateAvailable() {
+        if(this.locked)
+            return;
+
         let blockHtml = this._getBlockHtmlElement();
         blockHtml.show();
         this._adjustColsWeight(true);
@@ -301,10 +320,10 @@ class Event {
     getHTML() {
         let el = $(`
             <div class="col-12 cal-block cal-event">
-            <div class="cal-event-cells">${this.teacher}</div>
-            <div class="cal-event-cells">${this.lecture}</div>
-            <div class="cal-event-cells">${formatHours(this.block.startTime.hours, this.block.startTime.min)} - ${formatHours(this.block.endTime.hours, this.block.endTime.min)}</div>
-            <span class="cal-btn-del">x</span>
+                <div class="cal-event-cells">${this.teacher}</div>
+                <div class="cal-event-cells">${this.lecture}</div>
+                <div class="cal-event-cells">${formatHours(this.block.startTime.hours, this.block.startTime.min)} - ${formatHours(this.block.endTime.hours, this.block.endTime.min)}</div>
+                <span class="cal-btn-del">x</span>
             </div>`);
 
         el.find('.cal-btn-del').click(() => {
