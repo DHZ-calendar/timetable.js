@@ -30,12 +30,17 @@ class Timetable {
         en: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
     }
 
-    init() {
-        this.calendar.addClass('cal-tbody');
-
+    getDaysTranslated(){
         let days = this._DAYS.en;
         if(this.lang in Object.keys(this._DAYS))
             days = this._DAYS[this.lang];
+        return days;
+    }
+
+    init() {
+        this.calendar.addClass('cal-tbody');
+
+        let days = this.getDaysTranslated();
 
         this.calendar.append(`        
             <tr>
@@ -129,6 +134,17 @@ class Timetable {
         let blockLocked = new Block("Lock" + dayOfWeek, text, dayOfWeek, { hours: this.minHour, min: 0 }, { hours: this.maxHour + 1, min: 0 });
         blockLocked.locked = true;
         this.addBlock(blockLocked);
+    }
+    setDays(startDate){
+        let headers = this.calendar.children().first().children();
+        let days = this.getDaysTranslated();
+        let frm = (x) => ("0" + x).slice(-2);
+
+        for(let i = 1; i < headers.length; i++){
+            let dateStr = frm(startDate.getDate()) + "/" + frm(startDate.getMonth() + 1);
+            $(headers[i]).text(days[i-1] + " " + dateStr);
+            startDate = new Date(startDate.setDate(startDate.getDate() + 1));            
+        }
     }
 }
 
