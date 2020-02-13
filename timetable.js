@@ -90,17 +90,18 @@ class Timetable {
         let startElem = $(this.calendar.children()[rowStart]).find(`td[data-day=${block.day}]`);
         startElem.attr('rowspan', rowEnd - rowStart);
 
-        block.htmlElement = startElem.append(block.getHTML()).children().first();
-
         this.blocks[block.id] = block;
 
-        block.htmlElement.css('height', startElem.height()); //adjust the size of the cell to fit the parent
-
-        block.setOnClick(clickFn);
-
+        //hide the following rows
         for (let i = rowStart + 1; i < rowEnd; i++) {
             $(this.calendar.children()[i]).find(`td[data-day=${block.day}]`).hide();
         }
+
+        block.htmlElement = startElem.append(block.getHTML()).children().first();
+
+        block.setOnClick(clickFn);
+        
+        block.htmlElement.css('height', 6 * (rowEnd - rowStart) + 'px'); //adjust the size of the cell to fit the parent
     }
 
     getBlock(blockId) {

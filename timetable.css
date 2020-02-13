@@ -1,6 +1,6 @@
 .cal-cell {
-    min-height: 5px;
-    height: 5px;
+    min-height: 6px;
+    height: 6px;
     border-left: 1px solid #c2c2c2;
     border-right: 1px solid #c2c2c2;
     text-align: center;
@@ -8,8 +8,8 @@
 }
 
 .cal-time {
-    max-height: 70px;
-    height: 70px;
+    max-height: 72px;
+    height: 72px;
     border: 1px solid black;
 }
 
