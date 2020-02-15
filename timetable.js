@@ -321,13 +321,14 @@ class Block {
 }
 
 class Event {
-    constructor(id, teacher, lecture) {
+    constructor(id, teacher, lecture, onDelete) {
         this.id = id;
         this.teacher = teacher;
         this.lecture = lecture;
 
         this.htmlElement = null;
         this.onClick = null;
+        this.onDelete = onDelete;
     }
 
     attachToBlock(block) {
@@ -342,6 +343,10 @@ class Event {
                 onClick(this)
             });
     }
+    setOnDelete(onDelete) {
+        this.onDelete = onDelete;
+    }
+
     getHTML() {
         let el = $(`
             <div class="col-12 cal-block cal-event">
@@ -352,6 +357,7 @@ class Event {
             </div>`);
 
         el.find('.cal-btn-del').click(() => {
+            this.onDelete(this);
             this.block.deleteEvent(this);
         });
 
