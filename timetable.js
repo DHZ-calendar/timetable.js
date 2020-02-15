@@ -130,10 +130,10 @@ class Timetable {
             block.deleteAllEvents();
         }
     }
-    addEvent(event, blockId, clickFn) {
+    addEvent(event, blockId, clickFn, deleteFn) {
         let block = this.blocks[blockId];
 
-        block.addEvent(event, clickFn);
+        block.addEvent(event, clickFn, deleteFn);
     }
     lockDay(dayOfWeek, text){
         let blockLocked = new Block("Lock" + dayOfWeek, text, dayOfWeek, { hours: this.minHour, min: 0 }, { hours: this.maxHour + 1, min: 0 });
@@ -255,7 +255,7 @@ class Block {
         tableCell.removeAttr("rowspan");
         this.htmlElement.remove();
     }
-    addEvent(event, clickFn) {
+    addEvent(event, clickFn, deleteFn) {
         event.attachToBlock(this);
         this.events.push(event);
 
@@ -274,6 +274,7 @@ class Block {
 
         event.htmlElement = newEventBlock;
         event.setOnClick(clickFn);
+        event.setOnDelete(deleteFn);
     }
     deleteEvent(event) {
         this.events = this.events.filter(ev => ev.id !== event.id);
@@ -321,14 +322,14 @@ class Block {
 }
 
 class Event {
-    constructor(id, teacher, lecture, onDelete) {
+    constructor(id, teacher, lecture) {
         this.id = id;
         this.teacher = teacher;
         this.lecture = lecture;
 
         this.htmlElement = null;
         this.onClick = null;
-        this.onDelete = onDelete;
+        this.onDelete = null;
     }
 
     attachToBlock(block) {
