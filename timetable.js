@@ -20,6 +20,8 @@ class Timetable {
         this.events = [];
         this.lockedDays = [];
 
+        this.blockStates = {};
+
         this.lang = navigator.language || navigator.userLanguage;
 
         this.init(cal);
@@ -90,6 +92,8 @@ class Timetable {
         let startElem = $(this.calendar.children()[rowStart]).find(`td[data-day=${block.day}]`);
         startElem.attr('rowspan', rowEnd - rowStart);
 
+
+        block.blockStates = this.blockStates;
         this.blocks[block.id] = block;
 
         //hide the following rows
@@ -148,6 +152,9 @@ class Timetable {
             $(headers[i]).text(days[i-1] + " " + dateStr);
             date = new Date(date.setDate(date.getDate() + 1));            
         }
+    }
+    setMapOfBlockStates(blockStates){
+        this.blockStates = blockStates;
     }
 }
 
@@ -211,28 +218,27 @@ class Block {
     _getBlockHtmlElement() {
         return this.htmlElement.children().last();
     }
-    setStateAvailable() {
+    setState(blockState) {
         if(this.locked)
             return;
 
         let blockHtml = this._getBlockHtmlElement();
         blockHtml.show();
         this._adjustColsWeight(true);
-        blockHtml.addClass('cal-block-available');
-        blockHtml.removeClass('cal-block-denied');
-    }
-    setStateDenied() {
-        let blockHtml = this._getBlockHtmlElement();
-        blockHtml.show();
-        this._adjustColsWeight();
-        blockHtml.addClass('cal-block-denied');
-        blockHtml.removeClass('cal-block-available');
+
+        for(let i of Object.keys(this.blockStates)){
+            blockHtml.removeClass(this.blockStates[i]);
+        }
+        blockHtml.addClass(this.blockStates[blockState]);
     }
     setStateNormal() {
         let blockHtml = this._getBlockHtmlElement();
         this._adjustColsWeight();
-        blockHtml.removeClass('cal-block-denied');
-        blockHtml.removeClass('cal-block-available');
+
+        for(let i of Object.keys(this.blockStates)){
+            blockHtml.removeClass(this.blockStates[i]);
+        }
+
         blockHtml.unbind("click");
     }
     delete(){

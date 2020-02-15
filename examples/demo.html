@@ -33,6 +33,12 @@
         let cal = $("#calendar");
         timetable = new Timetable(cal, 8, 23);
 
+        let blockStates = {
+          'available': 'cal-block-available',
+          'denied': 'cal-block-denied'
+        };
+        timetable.setMapOfBlockStates(blockStates);
+
         let clickFn = (blockState) => {
           alert("blocco: " + blockState);
         };
@@ -61,7 +67,7 @@
 
       function btnClick(){
         for(let bId of Object.keys(timetable.blocks)){
-          timetable.getBlock(bId).setStateDenied();
+          timetable.getBlock(bId).setState('denied');
         }
 
         let clickFn = (block) => {
@@ -75,9 +81,9 @@
           timetable.resetAllBlocksStates();
         }
 
-        timetable.getBlock(2).setStateAvailable();
+        timetable.getBlock(2).setState('available');
         timetable.getBlock(2).setOnClick(clickFn);
-        timetable.getBlock(3).setStateAvailable();
+        timetable.getBlock(3).setState('available');
         timetable.getBlock(3).setOnClick(clickFn);
       }
     </script>
