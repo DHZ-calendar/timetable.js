@@ -358,8 +358,11 @@ class Event {
             </div>`);
 
         el.find('.cal-btn-del').click(() => {
-            this.onDelete(this);
-            this.block.deleteEvent(this);
+            let res = true;
+            if(this.onDelete !== undefined)
+                res = this.onDelete(this);
+            if(res)
+                this.block.deleteEvent(this);
         });
 
         return el;
