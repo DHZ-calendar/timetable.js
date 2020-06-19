@@ -365,6 +365,9 @@ class Event {
                 this.block.deleteEvent(this);
         });
 
+        if (this.onDelete === null || this.onDelete === undefined)
+            el.find('.cal-btn-del').hide();
+
         return el;
     }
 }
