@@ -345,7 +345,10 @@ class Event {
             });
     }
     setOnDelete(onDelete) {
-        this.onDelete = onDelete;
+        this.onDelete = onDelete;        
+
+        if (this.onDelete === null || this.onDelete === undefined)
+            this.htmlElement.find('.cal-btn-del').hide();
     }
 
     getHTML() {
@@ -364,9 +367,6 @@ class Event {
             if(res)
                 this.block.deleteEvent(this);
         });
-
-        if (this.onDelete === null || this.onDelete === undefined)
-            el.find('.cal-btn-del').hide();
 
         return el;
     }
